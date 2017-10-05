@@ -41,4 +41,10 @@ postcar-y += pl011.c
 ramstage-y += pl011.c
 endif
 
+ifeq ($(CONFIG_ASAN),y)
+CFLAGS_REMOVE_uart8250mem.o := $(KASAN_FLAGS)
+CFLAGS_REMOVE_uart8250io.o := $(KASAN_FLAGS)
+CFLAGS_REMOVE_pl011.o := $(KASAN_FLAGS)
+endif
+
 endif

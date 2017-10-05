@@ -318,7 +318,9 @@ el$(EMPTY)se
 $$(call src-to-obj,$1,$$(1).$2): $$(1).$2 $(KCONFIG_AUTOHEADER) $(4)
 	@printf "    CC         $$$$(subst $$$$(obj)/,,$$$$(@))\n"
 	$(CC_$(1)) \
-		-MMD $$$$(CPPFLAGS_$(1)) $$$$(CFLAGS_$(1)) -MT $$$$(@) \
+		-MMD $$$$(CPPFLAGS_$(1)) \
+		$$$$(filter-out $$$$(CFLAGS_REMOVE_$$$$(notdir $$$$(@))),$$$$(CFLAGS_$(1))) \
+		-MT $$$$(@) \
 		$(3) -c -o $$$$@ $$$$<
 end$(EMPTY)if
 en$(EMPTY)def

@@ -39,6 +39,7 @@
 #include <timer.h>
 #include <timestamp.h>
 #include <thread.h>
+#include "asan.h"
 
 static boot_state_t bs_pre_device(void *arg);
 static boot_state_t bs_dev_init_chips(void *arg);
@@ -445,6 +446,8 @@ void main(void)
 	 * cies on C code. So we can call them here early, and don't
 	 * have to worry at which point we can start to use Ada.
 	 */
+	kasan_poison_shadow(0, 0xfffffffful, 0xff);
+	// *(volatile uint32_t*)0x555550 = 3;
 	ramstage_adainit();
 
 	/* TODO: Understand why this is here and move to arch/platform code. */

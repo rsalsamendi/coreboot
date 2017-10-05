@@ -73,14 +73,14 @@ void initialize_romstage_microcode_cbfs_lock(void);
 #define spin_unlock_string \
 	"movb $1,%0"
 
-static inline __attribute__((always_inline)) void spin_lock(spinlock_t *lock)
+static inline /*__attribute__((always_inline))*/ __attribute__((no_sanitize_address)) void spin_lock(spinlock_t *lock)
 {
 	__asm__ __volatile__(
 		spin_lock_string
 		: "=m" (lock->lock) : : "memory");
 }
 
-static inline __attribute__((always_inline)) void spin_unlock(spinlock_t *lock)
+static inline /*__attribute__((always_inline))*/ void __attribute__((no_sanitize_address)) spin_unlock(spinlock_t *lock)
 {
 	__asm__ __volatile__(
 		spin_unlock_string

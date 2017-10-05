@@ -10,6 +10,16 @@ endif
 smm-$(CONFIG_DEBUG_SMI) += init.c console.c vtxprintf.c printk.c
 smm-$(CONFIG_SMM_TSEG) += die.c
 
+ifeq ($(CONFIG_ASAN),y)
+CFLAGS_REMOVE_asan.o := $(KASAN_FLAGS)
+CFLAGS_REMOVE_vtxprintf.o := $(KASAN_FLAGS)
+CFLAGS_REMOVE_printk.o := $(KASAN_FLAGS)
+CFLAGS_REMOVE_vsprintf.o := $(KASAN_FLAGS)
+CFLAGS_REMOVE_console.o := $(KASAN_FLAGS)
+CFLAGS_REMOVE_init.o := $(KASAN_FLAGS)
+CFLAGS_REMOVE_die.o := $(KASAN_FLAGS)
+endif
+
 verstage-y += init.c
 verstage-y += printk.c
 verstage-y += vtxprintf.c vsprintf.c

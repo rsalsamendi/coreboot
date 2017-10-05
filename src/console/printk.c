@@ -39,7 +39,7 @@ static void wrap_putchar(unsigned char byte, void *data)
 	do_putchar(byte);
 }
 
-int do_printk(int msg_level, const char *fmt, ...)
+int __attribute__((no_sanitize_address)) do_printk(int msg_level, const char *fmt, ...)
 {
 	va_list args;
 	int i;

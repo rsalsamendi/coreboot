@@ -19,6 +19,16 @@ ramstage-y += ubsan.c
 CFLAGS_ramstage += -fsanitize=undefined
 endif
 
+ifeq ($(CONFIG_ASAN),y)
+ramstage-y += asan.c
+KASAN_FLAGS := -fsanitize=kernel-address
+CFLAGS_REMOVE_cbmem_console.o := $(KASAN_FLAGS)
+CFLAGS_REMOVE_asan.o := $(KASAN_FLAGS)
+CFLAGS_ramstage += $(KASAN_FLAGS)
+endif
+
+#-MMD $$$$(CPPFLAGS_$(1)) $$$$(filter-out $$$$(CFLAGS_REMOVE_$$$$(notdir $$$$(@))),$$$$(CFLAGS_$(1))) -MT $$$$(@)
+
 ifneq ($(CONFIG_BOOTBLOCK_CUSTOM),y)
 bootblock-y += bootblock.c
 endif
