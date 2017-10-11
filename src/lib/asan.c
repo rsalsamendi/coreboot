@@ -65,8 +65,8 @@ static void print_error_description(struct access_info *info)
 		break;
 	}
 
-	printk(BIOS_ERR, "BUG: AddressSanitizer: %s in %pS at addr %p\n",
-		bug_type, (void *)info->ip,
+	printk(BIOS_ERR, "BUG: AddressSanitizer: %s (%hhx) in %pS at addr %p\n",
+		bug_type, shadow_val, (void *)info->ip,
 		(void *)info->access_addr);
 }
 

@@ -1,6 +1,27 @@
 #ifndef __ASAN_H__
 #define __ASAN_H__
 
+
+#define KASAN_FREE_PAGE         0xFF  /* page was freed */
+#define KASAN_PAGE_REDZONE      0xFE  /* redzone for kmalloc_large allocations */
+#define KASAN_KMALLOC_REDZONE   0xFC  /* redzone inside slub object */
+#define KASAN_KMALLOC_FREE      0xFB  /* object was freed (kmem_cache_free/kfree) */
+#define KASAN_GLOBAL_REDZONE    0xFA  /* redzone for global variable */
+
+/*
+ *  * Stack redzone shadow values
+ *   * (Those are compiler's ABI, don't change them)
+ *    */
+#define KASAN_STACK_LEFT        0xF1
+#define KASAN_STACK_MID         0xF2
+#define KASAN_STACK_RIGHT       0xF3
+#define KASAN_STACK_PARTIAL     0xF4
+#define KASAN_USE_AFTER_SCOPE   0xF8
+
+#define __round_mask(x, y) ((__typeof__(x))((y)-1))
+#define round_up(x, y) ((((x)-1) | __round_mask(x, y))+1)
+#define round_down(x, y) ((x) & ~__round_mask(x, y))
+
 void kasan_poison_shadow(const void *address, size_t size, u8 value);
 void kasan_unpoison_shadow(const void *address, size_t size);
 

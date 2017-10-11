@@ -446,7 +446,11 @@ void main(void)
 	 * cies on C code. So we can call them here early, and don't
 	 * have to worry at which point we can start to use Ada.
 	 */
-	kasan_poison_shadow(0, 0xfffffffful, 0xff);
+	kasan_poison_shadow(0, 0xc0000000, 0xff);
+	kasan_poison_shadow((void*)0xc0000000, (0xffffffff>>3), 0xf9);
+	kasan_poison_shadow((void*)(0xc0000000+(0xffffffff>>3)),
+		(0xfffffffful-(0xc0000000+(0xffffffff>>3))), 0xff);
+
 	// *(volatile uint32_t*)0x555550 = 3;
 	ramstage_adainit();
 
