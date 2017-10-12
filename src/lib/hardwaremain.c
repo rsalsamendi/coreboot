@@ -446,10 +446,35 @@ void main(void)
 	 * cies on C code. So we can call them here early, and don't
 	 * have to worry at which point we can start to use Ada.
 	 */
-	kasan_poison_shadow(0, 0xc0000000, 0xff);
+	kasan_poison_shadow(0, 0x100000, 0xff);
+	kasan_poison_shadow((void*)0x130000, (0xc0000000-0x130000), 0xfe);
+
 	kasan_poison_shadow((void*)0xc0000000, (0xffffffff>>3), 0xf9);
 	kasan_poison_shadow((void*)(0xc0000000+(0xffffffff>>3)),
-		(0xfffffffful-(0xc0000000+(0xffffffff>>3))), 0xff);
+		(0xfffffffful-(0xc0000000+(0xffffffff>>3))), 0xfd);
+	kasan_unpoison_shadow((void*)0x400, 0x200); // EBDA
+	kasan_unpoison_shadow((void*)0xf6000, 0x400); // EBDA extended
+	kasan_unpoison_shadow((void*)0xfee00000, 0x1000); // LAPIC
+	kasan_unpoison_shadow((void*)0xa0000, 0x20000); // VGA
+
+	kasan_unpoison_shadow((void*)0xbffd6000, 0x240); // coreboot
+
+	kasan_unpoison_shadow((void*)0xbffff000, 0x1000); // IMD ROOT
+	kasan_unpoison_shadow((void*)0xbfffec00, 0x400); // IMD SMALL ROOT
+	kasan_unpoison_shadow((void*)0xbfffeac0, 0x140); // IMD SMALL CAR GLOBALS
+	kasan_unpoison_shadow((void*)0xbfffe8c0, 0x200); // IMD SMALL GDT
+
+	kasan_unpoison_shadow((void*)0xbffde000, 0x20000); // CONSOLE
+	kasan_unpoison_shadow((void*)0xbffd6000, 0x8000); // COREBOOT
+	kasan_unpoison_shadow((void*)0xbffd5000, 0x1000); // IRQ
+	kasan_unpoison_shadow((void*)0xbffb1000, 0x24000); // ACPI
+	kasan_unpoison_shadow((void*)0xbffb0000, 0x800); // SMBIOS
+
+	kasan_unpoison_shadow((void*)0xbfffec00, 0x1400);
+	kasan_unpoison_shadow((void*)0xbffb0000, 0x3000); // ACPI
+
+	kasan_unpoison_shadow((void*)0xfffc0000, 0x3ffff); // flash
+	kasan_unpoison_shadow((void*)0xe2480, 0x1db80); // lzma segment
 
 	// *(volatile uint32_t*)0x555550 = 3;
 	ramstage_adainit();
