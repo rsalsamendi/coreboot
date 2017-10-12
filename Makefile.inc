@@ -427,13 +427,13 @@ endif
 ifeq ($(CONFIG_WARNINGS_ARE_ERRORS),y)
 CFLAGS_common += -Werror
 endif
-ifneq ($(GDB_DEBUG),)
+			#ifneq ($(GDB_DEBUG),)
 CFLAGS_common += -Og
 ADAFLAGS_common += -Og
-else
-CFLAGS_common += -Os
-ADAFLAGS_common += -Os
-endif
+		#else
+			#CFLAGS_common += -Os
+			#ADAFLAGS_common += -Os
+			#endif
 
 ifeq ($(CONFIG_DEBUG_ADA_CODE),y)
 ADAFLAGS_common += -gnata
